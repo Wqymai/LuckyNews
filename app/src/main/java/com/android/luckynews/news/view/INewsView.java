@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by wuqiyan on 17/1/19.
  */
-public interface NewsView {
+public interface INewsView {
     void showProgress();
     void addNews(List<NewsBean> newsList);
     void hideProgress();

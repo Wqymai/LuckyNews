@@ -1,6 +1,7 @@
 package com.android.luckynews.news.model;
 
 import com.android.luckynews.bean.NewsBean;
+import com.android.luckynews.bean.NewsDetailBean;
 import com.android.luckynews.commons.Urls;
 import com.android.luckynews.news.NewsJsonUtils;
 import com.android.luckynews.news.widget.NewsFragment;
@@ -11,7 +12,7 @@ import java.util.List;
 /**
  * Created by wuqiyan on 17/1/19.
  */
-public class NewsModelImpl implements NewsModel {
+public class NewsModelImpl implements INewsModel {
     @Override
     public void loadNews(String url, final int type, final OnLoadNewsListListener listener) {
         OkHttpUtils.ResultCallback<String> loadNewsCallback=new OkHttpUtils.ResultCallback<String>() {
@@ -30,10 +31,30 @@ public class NewsModelImpl implements NewsModel {
     }
 
     @Override
-    public void loadNewsDetail(String docid, OnLoadNewsDetailListener listener) {
+    public void loadNewsDetail(final String docid, final OnLoadNewsDetailListener listener) {
+        String url=getDetailUrl(docid);
+        OkHttpUtils.ResultCallback<String> loadNewsCallback=new OkHttpUtils.ResultCallback<String>() {
+
+
+            @Override
+            public void onSuccess(String response) {
+                NewsDetailBean newsDetailBean=NewsJsonUtils.readJsonNewsDetailBeans(response,docid);
+                listener.onSuccess(newsDetailBean);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                listener.onFailure("load news detail info failure",e);
+            }
+        };
+        OkHttpUtils.get(url,loadNewsCallback);
 
     }
-
+    private String getDetailUrl(String docId) {
+        StringBuffer sb = new StringBuffer(Urls.NEW_DETAIL);
+        sb.append(docId).append(Urls.END_DETAIL_URL);
+        return sb.toString();
+    }
     private String getID(int type) {
         String id;
         switch (type) {

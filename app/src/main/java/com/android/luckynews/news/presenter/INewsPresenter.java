@@ -3,6 +3,6 @@ package com.android.luckynews.news.presenter;
 /**
  * Created by wuqiyan on 17/1/19.
  */
-public interface NewsPresenter {
+public interface INewsPresenter {
     void loadNews(int type,int page);
 }

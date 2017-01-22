@@ -1,13 +1,17 @@
 package com.android.luckynews.news.widget;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +20,9 @@ import com.android.luckynews.R;
 import com.android.luckynews.bean.NewsBean;
 import com.android.luckynews.commons.Urls;
 import com.android.luckynews.news.NewsAdapter;
-import com.android.luckynews.news.presenter.NewsPresenter;
+import com.android.luckynews.news.presenter.INewsPresenter;
 import com.android.luckynews.news.presenter.NewsPresenterImpl;
-import com.android.luckynews.news.view.NewsView;
+import com.android.luckynews.news.view.INewsView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +30,14 @@ import java.util.List;
 /**
  * Created by wuqiyan on 17/1/19.
  */
-public class NewsListFragment extends Fragment implements NewsView,SwipeRefreshLayout.OnRefreshListener {
+public class NewsListFragment extends Fragment implements INewsView,SwipeRefreshLayout.OnRefreshListener {
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private NewsAdapter mAdapter;
     private List<NewsBean> mData;
-    private NewsPresenter mNewsPresenter;
+    private INewsPresenter mNewsPresenter;
 
     private int mType=NewsFragment.NEWS_TYPE_TOP;
     private int pageIndex=0;
@@ -86,7 +90,6 @@ public class NewsListFragment extends Fragment implements NewsView,SwipeRefreshL
             mData.clear();
         }
         mNewsPresenter.loadNews(mType,pageIndex);
-
     }
 
     @Override
@@ -126,8 +129,6 @@ public class NewsListFragment extends Fragment implements NewsView,SwipeRefreshL
         }
         View view=getActivity()==null?mRecyclerView.getRootView():getActivity().findViewById(R.id.drawer_layout);
         Snackbar.make(view,getString(R.string.load_fail),Snackbar.LENGTH_SHORT).show();
-
-
     }
     private RecyclerView.OnScrollListener mOnScrollListener=new RecyclerView.OnScrollListener(){
         private int lastVisibleItem;
@@ -144,7 +145,7 @@ public class NewsListFragment extends Fragment implements NewsView,SwipeRefreshL
             if (newState==RecyclerView.SCROLL_STATE_IDLE
                     && lastVisibleItem+1==mAdapter.getItemCount()
                     && mAdapter.isShowFooter()){
-
+                    mNewsPresenter.loadNews(mType,pageIndex+Urls.PAZE_SIZE);
             }
         }
     };
@@ -157,7 +158,14 @@ public class NewsListFragment extends Fragment implements NewsView,SwipeRefreshL
             if (mData.size()<=0){
                 return;
             }
+            NewsBean news=mAdapter.getItem(position);
+            Intent intent=new Intent(getActivity(),NewsDetailActivity.class);
+            intent.putExtra("news",news);
 
+            View transitionView=view.findViewById(R.id.ivNews);
+            ActivityOptionsCompat optionsCompat=ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(),
+                    transitionView,getString(R.string.transition_news_img));
+            ActivityCompat.startActivity(getActivity(),intent,optionsCompat.toBundle());
 
         }
     };

@@ -1,11 +1,13 @@
 package com.android.luckynews.news.presenter;
 
+import android.util.Log;
+
 import com.android.luckynews.bean.NewsBean;
 import com.android.luckynews.commons.Urls;
-import com.android.luckynews.news.model.NewsModel;
+import com.android.luckynews.news.model.INewsModel;
 import com.android.luckynews.news.model.NewsModelImpl;
 import com.android.luckynews.news.model.OnLoadNewsListListener;
-import com.android.luckynews.news.view.NewsView;
+import com.android.luckynews.news.view.INewsView;
 import com.android.luckynews.news.widget.NewsFragment;
 
 import java.util.List;
@@ -13,11 +15,11 @@ import java.util.List;
 /**
  * Created by wuqiyan on 17/1/19.
  */
-public class NewsPresenterImpl implements NewsPresenter,OnLoadNewsListListener {
-    private NewsView mNewsView;
-    private NewsModel mNewsModel;
+public class NewsPresenterImpl implements INewsPresenter,OnLoadNewsListListener {
+    private INewsView mNewsView;
+    private INewsModel mNewsModel;
 
-    public NewsPresenterImpl(NewsView newsView){
+    public NewsPresenterImpl(INewsView newsView){
         this.mNewsView=newsView;
         this.mNewsModel=new NewsModelImpl();
 

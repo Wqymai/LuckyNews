@@ -2,6 +2,7 @@ package com.android.luckynews.utils;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import com.google.gson.internal.$Gson$Types;
 import com.squareup.okhttp.Callback;
@@ -61,6 +62,9 @@ public class OkHttpUtils {
             public void onResponse(Response response) throws IOException {
                 try{
                     String str=response.body().string();
+
+//                    Log.i("TAG","返回结果："+str);
+
                     if (callback.mType==String.class){
                         sendSuccessCallBack(callback, str);
                     }
@@ -140,6 +144,7 @@ public class OkHttpUtils {
 
 
     public  static void get(String url,ResultCallback callback){
+//        Log.i("TAG","URL:"+url);
         getmInstance().getRequest(url,callback);
     }
     public static void post(String url,final ResultCallback callback,List<Param> params){

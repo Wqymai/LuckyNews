@@ -17,6 +17,7 @@
         android:padding="12dp"
         >
         <ImageView
+            android:src="@mipmap/ic_launcher"
             android:id="@+id/ivNews"
             android:layout_width="86dp"
             android:layout_height="60dp"
@@ -30,6 +31,7 @@
             >
             <TextView
                 android:id="@+id/tvTitle"
+                android:text="这是title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
@@ -38,13 +40,14 @@
                 android:singleLine="true"
                 />
             <TextView
+                android:text="这是desc这是desc这是desc这是desc这是desc这是desc这是desc这是desc这是desc这是desc这是desc这是desc这是desc"
                 android:id="@+id/tvDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="1dp"
                 android:textColor="@color/secondary_text"
                 android:maxLines="2"
-                android:textSize="@dimen/sn_12sp"
+                android:textSize="@dimen/sn_10sp"
 
                 />
         </LinearLayout>

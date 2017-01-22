@@ -1,9 +1,11 @@
 package com.android.luckynews.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by wuqiyan on 17/1/19.
  */
-public class NewsBean {
+public class NewsBean implements Serializable {
     /**
      * docid
      */
@@ -90,4 +92,15 @@ public class NewsBean {
 
      */
     private String tag;
+
+
+    @Override
+    public String toString() {
+        return "[docid:"+docid+
+               ",title:"+title+
+               ",digest:"+digest+
+               ",imgsrc:"+imgsrc+
+               ",source:"+source+
+               ",ptime:"+ptime+"]";
+    }
 }

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.android.luckynews.R;
 import com.android.luckynews.bean.NewsBean;
+import com.android.luckynews.utils.ImageLoaderUtils;
 
 import java.util.List;
 
@@ -39,22 +40,33 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType==TYPE_ITEM){
-            View v= LayoutInflater.from(parent.getContext())
+            View vItem= LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_news,parent,false);
-            ItemViewHolder vh=new ItemViewHolder(v);
-            return vh;
+            return new ItemViewHolder(vItem);
         }
         else {
-            View v=LayoutInflater.from(parent.getContext())
+            View vFoot=LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.footer,null);
-            v.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            return new FooterViewHolder(v);
+            vFoot.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            return new FooterViewHolder(vFoot);
         }
 
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+
+        if (holder instanceof ItemViewHolder){
+            NewsBean news=mData.get(position);
+            if (news==null){
+                return;
+            }
+            ((ItemViewHolder) holder).mTitle.setText(news.getTitle());
+            ((ItemViewHolder) holder).mDesc.setText(news.getDigest());
+            ImageLoaderUtils.display(mContext,((ItemViewHolder) holder).mNewsImg,news.getImgsrc());
+
+        }
+
 
     }
 
