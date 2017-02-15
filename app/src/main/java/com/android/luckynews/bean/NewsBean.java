@@ -6,6 +6,7 @@ import java.io.Serializable;
  * Created by wuqiyan on 17/1/19.
  */
 public class NewsBean implements Serializable {
+    private static final long serialVersionUID = 1L;
     /**
      * docid
      */

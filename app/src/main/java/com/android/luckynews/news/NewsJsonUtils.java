@@ -1,7 +1,5 @@
 package com.android.luckynews.news;
 
-import android.util.Log;
-
 import com.android.luckynews.bean.NewsBean;
 import com.android.luckynews.bean.NewsDetailBean;
 import com.android.luckynews.utils.JsonUtils;
@@ -41,10 +39,8 @@ public class NewsJsonUtils {
                 return null;
             }
             JsonArray jsonArray = jsonElement.getAsJsonArray();
-//            Log.i("TAG","size:"+jsonArray.size());
             for (int i = 1; i < jsonArray.size(); i++) {
                 JsonObject jo = jsonArray.get(i).getAsJsonObject();
-//                Log.i("TAG",jo+"");
                 if (jo.has("skipType") && "special".equals(jo.get("skipType").getAsString())) {
                     continue;
                 }
@@ -54,7 +50,6 @@ public class NewsJsonUtils {
 
                 if (!jo.has("imgextra")) {
                     NewsBean news = JsonUtils.deserialize(jo, NewsBean.class);
-//                    Log.i("TAG",news.toString());
                     beans.add(news);
                 }
 

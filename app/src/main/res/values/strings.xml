@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LuckyNews</string>
+    <string name="app_name">头条大事</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -20,7 +20,7 @@
     <string name="email">邮箱：lauren.liuling@gmail.com</string>
     <string name="blog">博客：http://www.liuling123.com</string>
 
-    <string name="top">头条</string>
+    <string name="top">推荐</string>
     <string name="nba">NBA</string>
     <string name="cars">汽车</string>
     <string name="jokes">笑话</string>
@@ -33,5 +33,5 @@
     <string name="load_fail">加载数据失败!</string>
     <string name="title_activity_news_detail">NewsDetailActivity</string>
 
-    <string name="image_hit">一次只加载20条，查看更多内容请刷新哦。</string>
+    <string name="image_hit">没有了。。。</string>
 </resources>

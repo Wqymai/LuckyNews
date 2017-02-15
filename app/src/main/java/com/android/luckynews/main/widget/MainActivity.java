@@ -10,6 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.android.luckynews.R;
+import com.android.luckynews.cache.CacheManager;
+import com.android.luckynews.images.widget.ImageFragment;
 import com.android.luckynews.main.presenter.MainPresenter;
 import com.android.luckynews.main.presenter.MainPresenterImpl;
 import com.android.luckynews.main.view.MainView;
@@ -24,8 +26,12 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme_NoActionBar);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //初始化缓存
+        CacheManager.getInstance().initCacheDir();
+
         mToolbar= (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         mDrawerLayout= (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -61,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void switch2Images() {
-//        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new ImageFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, new ImageFragment()).commit();
         mToolbar.setTitle(R.string.navigation_images);
 
     }
