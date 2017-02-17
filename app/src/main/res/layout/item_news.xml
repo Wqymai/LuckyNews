@@ -50,6 +50,7 @@
                 android:textSize="@dimen/sn_10sp"
 
                 />
+
         </LinearLayout>
 
     </LinearLayout>

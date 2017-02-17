@@ -27,14 +27,15 @@ public class NewsPresenterImpl implements INewsPresenter, OnLoadNewsListListener
     }
 
     @Override
-    public void loadNews(final int type, final int pageIndex) {
+    public void loadNews(final int type, final int pageIndex,final boolean isRefresh) {
         String url = getUrl(type, pageIndex);
         LogUtils.d(TAG, url);
         //只有第一页的或者刷新的时候才显示刷新进度条
         if(pageIndex == 0) {
             mNewsView.showProgress();
         }
-        mNewsModel.loadNews(url, type, this);
+
+        mNewsModel.loadNews(url, type, this,isRefresh);
     }
 
     /**

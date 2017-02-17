@@ -2,12 +2,15 @@ package com.android.luckynews.main.widget;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.android.luckynews.R;
 import com.android.luckynews.cache.CacheManager;
@@ -24,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     private NavigationView mNavigationView;
     private MainPresenter mMainPresenter;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme_NoActionBar);
@@ -33,6 +37,9 @@ public class MainActivity extends AppCompatActivity implements MainView {
         CacheManager.getInstance().initCacheDir();
 
         mToolbar= (Toolbar) findViewById(R.id.toolbar);
+
+
+
         setSupportActionBar(mToolbar);
         mDrawerLayout= (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle=new ActionBarDrawerToggle(this,mDrawerLayout,mToolbar,R.string.drawer_open,R.string.drawer_close);
@@ -42,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
         setupDrawerContent(mNavigationView);
         mMainPresenter=new MainPresenterImpl(this);
         switch2News();
+
+
 
     }
 

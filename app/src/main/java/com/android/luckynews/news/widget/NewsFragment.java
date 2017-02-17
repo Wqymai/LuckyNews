@@ -3,6 +3,7 @@ package com.android.luckynews.news.widget;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.luckynews.R;
 
@@ -28,10 +30,13 @@ public class NewsFragment extends android.support.v4.app.Fragment {
     private TabLayout mTablayout;
     private ViewPager mViewPager;
 
+    private FloatingActionButton mFab;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_news,null);
+        mFab= (FloatingActionButton) view.findViewById(R.id.fab);
         mTablayout= (TabLayout) view.findViewById(R.id.tab_layout);
         mViewPager= (ViewPager) view.findViewById(R.id.viewpager);
         mViewPager.setOffscreenPageLimit(3);
@@ -41,6 +46,13 @@ public class NewsFragment extends android.support.v4.app.Fragment {
         mTablayout.addTab(mTablayout.newTab().setText(R.string.cars));
         mTablayout.addTab(mTablayout.newTab().setText(R.string.jokes));
         mTablayout.setupWithViewPager(mViewPager);
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(),"fab",Toast.LENGTH_SHORT).show();
+            }
+        });
+
         return view;
     }
     private void setupViewPager(ViewPager viewPager){

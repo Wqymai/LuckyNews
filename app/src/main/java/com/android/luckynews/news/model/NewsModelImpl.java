@@ -24,10 +24,15 @@ public class NewsModelImpl implements INewsModel {
     boolean isLoadCache3=true;
 
     @Override
-    public void loadNews(String url, final int type, final OnLoadNewsListListener listener) {
+    public void loadNews(String url, final int type, final OnLoadNewsListListener listener,final boolean isRefresh) {
         OkHttpUtils.ResultCallback<String> loadNewsCallback=new OkHttpUtils.ResultCallback<String>() {
             @Override
             public void onSuccess(String response) {
+                Log.i("TAG","   RESPONSE:  "+response);
+                if (response.contains("<html>")){
+                    listener.onFailure("load news list failure",new Exception());
+                    return;
+                }
                 CacheManager.getInstance().putFileCache(getKeyName(type),response,0);
                 List<NewsBean> newsBeanList= NewsJsonUtils.readJsonNewsBeans(response,getID(type));
                 listener.onSuccess(newsBeanList);
@@ -38,11 +43,13 @@ public class NewsModelImpl implements INewsModel {
             }
         };
         String data=CacheManager.getInstance().getFileCache(getKeyName(type));
-        if (data!=null){
+        if (data!=null&&!isRefresh){
+            Log.i("TAG","Load cache...");
             List<NewsBean> newsBeanList= NewsJsonUtils.readJsonNewsBeans(data,getID(type));
             listener.onSuccess(newsBeanList);
         }
         else {
+            Log.i("TAG","http request ...");
             OkHttpUtils.get(url,loadNewsCallback);
         }
     }

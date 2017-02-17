@@ -82,7 +82,7 @@ public class NewsListFragment extends Fragment implements INewsView, SwipeRefres
         mAdapter.setOnItemClickListener(mOnItemClickListener);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addOnScrollListener(mOnScrollListener);
-        onRefresh();
+        firstLoad();
         return view;
     }
 
@@ -104,7 +104,7 @@ public class NewsListFragment extends Fragment implements INewsView, SwipeRefres
                     && mAdapter.isShowFooter()) {
                 //加载更多
                 LogUtils.d(TAG, "loading more data");
-                mNewsPresenter.loadNews(mType, pageIndex + Urls.PAZE_SIZE);
+                mNewsPresenter.loadNews(mType, pageIndex + Urls.PAZE_SIZE,true);
             }
         }
     };
@@ -135,12 +135,13 @@ public class NewsListFragment extends Fragment implements INewsView, SwipeRefres
 
     @Override
     public void addNews(List<NewsBean> newsList) {
-        Log.i("TAG","addNews...");
         mAdapter.isShowFooter(true);
         if(mData == null) {
             mData = new ArrayList<NewsBean>();
         }
-        Log.i("TAG","newsList:"+newsList.size());
+//        if (pageIndex==0 && mData != null){
+//            mData.clear();
+//        }
         mData.addAll(newsList);
         if(pageIndex == 0) {
             mAdapter.setmData(mData);
@@ -172,13 +173,26 @@ public class NewsListFragment extends Fragment implements INewsView, SwipeRefres
 
     @Override
     public void onRefresh() {
-
         pageIndex = 0;
         if(mData != null) {
             mData.clear();
         }
+        mNewsPresenter.loadNews(mType, pageIndex,true);
+        if (mAdapter.isShowFooter()&& mData==null){
+            hideProgress();
+        }
+    }
 
-        mNewsPresenter.loadNews(mType, pageIndex);
+    public void firstLoad(){
+        Log.i("TAG","firstLoad...");
+        pageIndex = 0;
+        if(mData != null) {
+            mData.clear();
+        }
+        mNewsPresenter.loadNews(mType, pageIndex,false);
+        if (mAdapter.isShowFooter()&& mData==null){
+            hideProgress();
+        }
     }
 
 }
