@@ -2,6 +2,7 @@ package com.android.luckynews.news.widget;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.BoolRes;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -27,6 +28,8 @@ import com.android.luckynews.utils.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.R.transition.move;
 
 /**
  * Created by wuqiyan on 17/1/19.
@@ -135,23 +138,26 @@ public class NewsListFragment extends Fragment implements INewsView, SwipeRefres
 
     @Override
     public void addNews(List<NewsBean> newsList) {
-        mAdapter.isShowFooter(true);
         if(mData == null) {
             mData = new ArrayList<NewsBean>();
         }
-//        if (pageIndex==0 && mData != null){
-//            mData.clear();
-//        }
-        mData.addAll(newsList);
+        if (newsList!=null||newsList.size()>0){
+            mAdapter.isShowFooter(true);
+            mData.addAll(newsList);
+        }
         if(pageIndex == 0) {
             mAdapter.setmData(mData);
         } else {
             //如果没有更多数据了,则隐藏footer布局
             if(newsList == null || newsList.size() == 0) {
-                mAdapter.isShowFooter(false);
+//                mAdapter.isShowFooter(false);
+                View view = getActivity() == null ? mRecyclerView.getRootView() : getActivity().findViewById(R.id.drawer_layout);
+                Snackbar.make(view, getString(R.string.image_hit), Snackbar.LENGTH_SHORT).show();
+
             }
             mAdapter.notifyDataSetChanged();
         }
+
         pageIndex += Urls.PAZE_SIZE;
     }
 
@@ -167,20 +173,21 @@ public class NewsListFragment extends Fragment implements INewsView, SwipeRefres
             mAdapter.isShowFooter(false);
             mAdapter.notifyDataSetChanged();
         }
+
         View view = getActivity() == null ? mRecyclerView.getRootView() : getActivity().findViewById(R.id.drawer_layout);
+
         Snackbar.make(view, getString(R.string.load_fail), Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
     public void onRefresh() {
+
         pageIndex = 0;
-        if(mData != null) {
-            mData.clear();
-        }
+//        if(mData != null) {
+//            mData.clear();
+//        }
         mNewsPresenter.loadNews(mType, pageIndex,true);
-        if (mAdapter.isShowFooter()&& mData==null){
-            hideProgress();
-        }
+
     }
 
     public void firstLoad(){
@@ -193,6 +200,23 @@ public class NewsListFragment extends Fragment implements INewsView, SwipeRefres
         if (mAdapter.isShowFooter()&& mData==null){
             hideProgress();
         }
+    }
+    private boolean move = false;
+    private void smoothMoveToPosition(int n) {
+        int firstItem = mLayoutManager.findFirstVisibleItemPosition();
+        Log.i("TAG","firstItem："+firstItem);
+        int lastItem = mLayoutManager.findLastVisibleItemPosition();
+        Log.i("TAG","lastItem："+lastItem);
+        if (n <= firstItem ){
+            mRecyclerView.smoothScrollToPosition(n);
+        }else if ( n <= lastItem ){
+            int top = mRecyclerView.getChildAt(n - firstItem).getTop();
+            mRecyclerView.smoothScrollBy(0, top);
+        }else{
+            mRecyclerView.smoothScrollToPosition(n);
+            move = true;
+        }
+
     }
 
 }

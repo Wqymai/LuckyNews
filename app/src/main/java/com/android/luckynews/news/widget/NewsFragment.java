@@ -36,7 +36,7 @@ public class NewsFragment extends android.support.v4.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_news,null);
-        mFab= (FloatingActionButton) view.findViewById(R.id.fab);
+//        mFab= (FloatingActionButton) view.findViewById(R.id.fab);
         mTablayout= (TabLayout) view.findViewById(R.id.tab_layout);
         mViewPager= (ViewPager) view.findViewById(R.id.viewpager);
         mViewPager.setOffscreenPageLimit(3);
@@ -46,12 +46,12 @@ public class NewsFragment extends android.support.v4.app.Fragment {
         mTablayout.addTab(mTablayout.newTab().setText(R.string.cars));
         mTablayout.addTab(mTablayout.newTab().setText(R.string.jokes));
         mTablayout.setupWithViewPager(mViewPager);
-        mFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(),"fab",Toast.LENGTH_SHORT).show();
-            }
-        });
+//        mFab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(getContext(),"fab",Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         return view;
     }

@@ -28,7 +28,6 @@ public class NewsModelImpl implements INewsModel {
         OkHttpUtils.ResultCallback<String> loadNewsCallback=new OkHttpUtils.ResultCallback<String>() {
             @Override
             public void onSuccess(String response) {
-                Log.i("TAG","   RESPONSE:  "+response);
                 if (response.contains("<html>")){
                     listener.onFailure("load news list failure",new Exception());
                     return;
