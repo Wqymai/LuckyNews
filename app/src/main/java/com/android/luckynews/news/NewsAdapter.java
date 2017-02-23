@@ -32,6 +32,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public void setmData(List<NewsBean> data) {
+
         this.mData = data;
         this.notifyDataSetChanged();
     }

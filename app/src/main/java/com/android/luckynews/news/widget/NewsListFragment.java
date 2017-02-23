@@ -139,25 +139,22 @@ public class NewsListFragment extends Fragment implements INewsView, SwipeRefres
     @Override
     public void addNews(List<NewsBean> newsList) {
         if(mData == null) {
-            mData = new ArrayList<NewsBean>();
+            mData = new ArrayList<>();
         }
-        if (newsList!=null||newsList.size()>0){
+        if (newsList!=null&&newsList.size()>0){
             mAdapter.isShowFooter(true);
             mData.addAll(newsList);
         }
         if(pageIndex == 0) {
             mAdapter.setmData(mData);
         } else {
-            //如果没有更多数据了,则隐藏footer布局
             if(newsList == null || newsList.size() == 0) {
-//                mAdapter.isShowFooter(false);
                 View view = getActivity() == null ? mRecyclerView.getRootView() : getActivity().findViewById(R.id.drawer_layout);
                 Snackbar.make(view, getString(R.string.image_hit), Snackbar.LENGTH_SHORT).show();
-
+                smoothMoveToPosition();
             }
             mAdapter.notifyDataSetChanged();
         }
-
         pageIndex += Urls.PAZE_SIZE;
     }
 
@@ -173,49 +170,39 @@ public class NewsListFragment extends Fragment implements INewsView, SwipeRefres
             mAdapter.isShowFooter(false);
             mAdapter.notifyDataSetChanged();
         }
-
         View view = getActivity() == null ? mRecyclerView.getRootView() : getActivity().findViewById(R.id.drawer_layout);
-
         Snackbar.make(view, getString(R.string.load_fail), Snackbar.LENGTH_SHORT).show();
+        smoothMoveToPosition();
     }
 
     @Override
     public void onRefresh() {
-
-        pageIndex = 0;
-//        if(mData != null) {
-//            mData.clear();
-//        }
+        pageIndex=0;
         mNewsPresenter.loadNews(mType, pageIndex,true);
 
     }
 
     public void firstLoad(){
-        Log.i("TAG","firstLoad...");
         pageIndex = 0;
-        if(mData != null) {
-            mData.clear();
-        }
         mNewsPresenter.loadNews(mType, pageIndex,false);
         if (mAdapter.isShowFooter()&& mData==null){
             hideProgress();
         }
     }
-    private boolean move = false;
-    private void smoothMoveToPosition(int n) {
+    private void smoothMoveToPosition() {
         int firstItem = mLayoutManager.findFirstVisibleItemPosition();
         Log.i("TAG","firstItem："+firstItem);
         int lastItem = mLayoutManager.findLastVisibleItemPosition();
-        Log.i("TAG","lastItem："+lastItem);
-        if (n <= firstItem ){
-            mRecyclerView.smoothScrollToPosition(n);
-        }else if ( n <= lastItem ){
-            int top = mRecyclerView.getChildAt(n - firstItem).getTop();
-            mRecyclerView.smoothScrollBy(0, top);
-        }else{
-            mRecyclerView.smoothScrollToPosition(n);
-            move = true;
-        }
+//        Log.i("TAG","lastItem："+lastItem);
+//        if (n <= firstItem ){
+//            mRecyclerView.smoothScrollToPosition(n);
+//        }else if ( n <= lastItem ){
+//            int top = mRecyclerView.getChildAt(n - firstItem).getTop();
+//            mRecyclerView.smoothScrollBy(0, top);
+//        }else{
+            mRecyclerView.smoothScrollToPosition(firstItem-1);
+//            move = true;
+//        }
 
     }
 

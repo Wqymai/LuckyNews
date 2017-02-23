@@ -10,6 +10,7 @@ import com.android.luckynews.news.NewsJsonUtils;
 import com.android.luckynews.news.widget.NewsFragment;
 import com.android.luckynews.utils.OkHttpUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -42,17 +43,23 @@ public class NewsModelImpl implements INewsModel {
             }
         };
         String data=CacheManager.getInstance().getFileCache(getKeyName(type));
+
         if (data!=null&&!isRefresh){
-            Log.i("TAG","Load cache...");
             List<NewsBean> newsBeanList= NewsJsonUtils.readJsonNewsBeans(data,getID(type));
-            listener.onSuccess(newsBeanList);
+            if (newsBeanList.size()>0){
+                Log.i("TAG","Load cache...");
+                listener.onSuccess(newsBeanList);
+            }
+            else{
+                Log.i("TAG","http request ...");
+                OkHttpUtils.get(url,loadNewsCallback);
+            }
         }
         else {
             Log.i("TAG","http request ...");
             OkHttpUtils.get(url,loadNewsCallback);
         }
     }
-
 
     public boolean isLoadCache(int type){
         boolean isLoad = true;
