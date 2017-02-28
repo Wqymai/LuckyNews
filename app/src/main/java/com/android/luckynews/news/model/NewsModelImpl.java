@@ -25,7 +25,7 @@ public class NewsModelImpl implements INewsModel {
     boolean isLoadCache3=true;
 
     @Override
-    public void loadNews(String url, final int type, final OnLoadNewsListListener listener,final boolean isRefresh) {
+    public void loadNews(String url, final int type, final OnLoadNewsListListener listener,final boolean isRefresh,final boolean isSaveCache) {
         OkHttpUtils.ResultCallback<String> loadNewsCallback=new OkHttpUtils.ResultCallback<String>() {
             @Override
             public void onSuccess(String response) {
@@ -33,7 +33,10 @@ public class NewsModelImpl implements INewsModel {
                     listener.onFailure("load news list failure",new Exception());
                     return;
                 }
-                CacheManager.getInstance().putFileCache(getKeyName(type),response,0);
+                if (isSaveCache){
+                    Log.i("TAG","save cache");
+                    CacheManager.getInstance().putFileCache(getKeyName(type),response,0);
+                }
                 List<NewsBean> newsBeanList= NewsJsonUtils.readJsonNewsBeans(response,getID(type));
                 listener.onSuccess(newsBeanList);
             }
